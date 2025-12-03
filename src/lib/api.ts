@@ -1,5 +1,5 @@
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3000";
-const API_PREFIX = "/api/v1";
+// Use the proxy API route to avoid CORS issues
+const API_PREFIX = "/api/proxy";
 
 interface FetchOptions extends RequestInit {
   token?: string;
@@ -19,7 +19,8 @@ export async function fetchFromBackend<T>(
     headers["Authorization"] = `Bearer ${token}`;
   }
 
-  const url = `${BACKEND_URL}${API_PREFIX}${endpoint}`;
+  // Use local proxy to avoid CORS issues
+  const url = `${API_PREFIX}${endpoint}`;
   const response = await fetch(url, {
     ...init,
     headers,
@@ -163,6 +164,7 @@ export async function getProducts(tenantId: string, page = 1, limit = 20) {
 
 // Health check
 export async function checkHealth() {
-  const response = await fetch(`${BACKEND_URL}/health`);
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+  const response = await fetch(`${backendUrl}/health`);
   return response.json();
 }
