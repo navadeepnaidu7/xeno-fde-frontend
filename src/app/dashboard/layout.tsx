@@ -191,9 +191,9 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           })}
           <button
             onClick={handleSignOut}
-            className="flex items-center gap-3 px-4 py-3.5 rounded-xl text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 w-full cursor-pointer transition-all duration-200 group"
+            className="flex items-center gap-3 px-4 py-3 mt-2 rounded-xl bg-red-50 dark:bg-red-950/20 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-950/40 w-full cursor-pointer transition-all duration-300 group border border-red-100 dark:border-red-900/30"
           >
-            <LogOut className="h-5 w-5 group-hover:scale-110 transition-transform duration-200" />
+            <LogOut className="h-5 w-5 group-hover:translate-x-0.5 transition-transform duration-300" />
             <span className="font-medium">Sign out</span>
           </button>
         </div>
@@ -320,15 +320,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               </p>
             </div>
           </div>
-          <Button
-            variant="ghost"
-            size="sm"
+          <button
             onClick={handleSignOut}
-            className="w-full justify-start text-red-600 dark:text-red-400 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-xl transition-all duration-200 group"
+            className="w-full flex items-center gap-2 px-3 py-2.5 mt-2 rounded-xl bg-red-50 dark:bg-red-950/20 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-950/40 cursor-pointer transition-all duration-300 group border border-red-100 dark:border-red-900/30 text-sm font-medium"
           >
-            <LogOut className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform duration-200" />
+            <LogOut className="h-4 w-4 group-hover:translate-x-0.5 transition-transform duration-300" />
             Sign out
-          </Button>
+          </button>
         </div>
       </aside>
 

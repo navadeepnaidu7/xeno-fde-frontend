@@ -38,37 +38,75 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-100 dark:bg-zinc-800 text-sm text-zinc-600 dark:text-zinc-400 mb-8">
+      <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        {/* Grid Background */}
+        <div className="absolute inset-0 -z-10 h-full w-full bg-white dark:bg-zinc-950 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]">
+          <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-green-400 opacity-20 blur-[100px]"></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto relative">
+          {/* Floating Elements (Decorative) */}
+          <div className="hidden lg:block absolute -left-12 top-10 animate-fade-in" style={{ animationDelay: "0.2s" }}>
+            <div className="bg-white dark:bg-zinc-900 p-2 rounded-2xl shadow-xl border border-zinc-100 dark:border-zinc-800 rotate-[-6deg]">
+              <div className="h-12 w-12 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                <BarChart3 className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+              </div>
+            </div>
+          </div>
+          <div className="hidden lg:block absolute -right-12 top-20 animate-fade-in" style={{ animationDelay: "0.4s" }}>
+            <div className="bg-white dark:bg-zinc-900 p-2 rounded-2xl shadow-xl border border-zinc-100 dark:border-zinc-800 rotate-[6deg]">
+              <div className="h-12 w-12 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+                <TrendingUp className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+              </div>
+            </div>
+          </div>
+          <div className="hidden lg:block absolute left-20 bottom-0 animate-fade-in" style={{ animationDelay: "0.6s" }}>
+            <div className="bg-white dark:bg-zinc-900 p-2 rounded-2xl shadow-xl border border-zinc-100 dark:border-zinc-800 rotate-[3deg]">
+              <div className="h-12 w-12 rounded-xl bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center">
+                <ShoppingCart className="h-6 w-6 text-orange-600 dark:text-orange-400" />
+              </div>
+            </div>
+          </div>
+          <div className="hidden lg:block absolute right-20 bottom-10 animate-fade-in" style={{ animationDelay: "0.8s" }}>
+            <div className="bg-white dark:bg-zinc-900 p-2 rounded-2xl shadow-xl border border-zinc-100 dark:border-zinc-800 rotate-[-3deg]">
+              <div className="h-12 w-12 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                <Users className="h-6 w-6 text-green-600 dark:text-green-400" />
+              </div>
+            </div>
+          </div>
+
+          <div className="max-w-4xl mx-auto text-center relative z-10">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm text-sm font-medium text-zinc-600 dark:text-zinc-400 mb-8 animate-fade-in">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
               </span>
-              Now supporting multi-tenant analytics
+                Supports multi-tenant analytics
             </div>
 
-            <h1 className="display-xl text-zinc-900 dark:text-zinc-50 mb-6">
+            <h1 className="text-5xl md:text-7xl font-bold text-zinc-900 dark:text-zinc-50 mb-8 tracking-tight leading-[1.1] animate-fade-in" style={{ animationDelay: "0.1s" }}>
               Store Analytics
               <br />
-              <span className="gradient-text">Made Simple</span>
+              <span className="relative inline-block mt-2">
+                <span className="relative z-10">Made Simple</span>
+                <span className="absolute bottom-2 left-0 w-full h-4 bg-yellow-300/50 dark:bg-yellow-500/30 -rotate-1 -z-0 rounded-sm"></span>
+              </span>
             </h1>
 
-            <p className="text-xl text-zinc-600 dark:text-zinc-400 mb-10 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xl text-zinc-600 dark:text-zinc-400 mb-10 max-w-2xl mx-auto leading-relaxed animate-fade-in" style={{ animationDelay: "0.2s" }}>
               The modern dashboard for Shopify stores. Track revenue, understand
               your customers, and grow your business with actionable insights.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in" style={{ animationDelay: "0.3s" }}>
               <Link href="/auth/signin">
-                <Button size="xl" className="gap-2">
-                  Sign In
-                  <ArrowRight className="h-4 w-4" />
+                <Button size="xl" className="h-14 px-8 text-lg rounded-full shadow-lg shadow-zinc-900/20 dark:shadow-zinc-100/10 hover:scale-105 transition-transform">
+                  Get Started
+                  <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
               <Link href="#features">
-                <Button variant="outline" size="xl">
+                <Button variant="outline" size="xl" className="h-14 px-8 text-lg rounded-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800">
                   See Features
                 </Button>
               </Link>

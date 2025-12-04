@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { Order, Pagination, Customer } from "@/lib/api";
 import { formatCurrency, formatDateTime, formatDate } from "@/lib/utils";
 import {
@@ -91,7 +92,7 @@ export default function OrdersTable({
               }, {} as Record<string, Order[]>);
 
               return Object.entries(groupedOrders).map(([date, dateOrders]) => (
-                <div key={date} style={{ display: 'contents' }}>
+                <React.Fragment key={date}>
                   <TableRow className="bg-zinc-50/50 dark:bg-zinc-800/50 hover:bg-zinc-50/50 dark:hover:bg-zinc-800/50">
                     <TableCell colSpan={4} className="py-2 font-semibold text-xs text-zinc-500 uppercase tracking-wider">
                       {date}
@@ -134,7 +135,7 @@ export default function OrdersTable({
                       </TableCell>
                     </TableRow>
                   ))}
-                </div>
+                </React.Fragment>
               ));
             })()
           )}
