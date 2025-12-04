@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { getMetrics, getTenant, Metrics, Tenant } from "@/lib/api";
+import { getMetrics, getTenant, getOrders, getProducts, Metrics, Tenant, Order, Product } from "@/lib/api";
 import { formatCurrency, formatNumber } from "@/lib/utils";
 import MetricsCard from "@/components/MetricsCard";
 import RevenueChart from "@/components/RevenueChart";
 import TopCustomersTable from "@/components/TopCustomersTable";
+import OrderValueDistributionChart from "@/components/OrderValueDistributionChart";
+import TopProductsChart from "@/components/TopProductsChart";
 import { IndianRupee, Users, ShoppingCart, TrendingUp, Target, Repeat } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
@@ -17,6 +19,8 @@ export default function TenantDashboardPage() {
 
   const [tenant, setTenant] = useState<Tenant | null>(null);
   const [metrics, setMetrics] = useState<Metrics | null>(null);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -25,13 +29,17 @@ export default function TenantDashboardPage() {
       setLoading(true);
       setError(null);
 
-      const [tenantData, metricsData] = await Promise.all([
+      const [tenantData, metricsData, ordersData, productsData] = await Promise.all([
         getTenant(tenantId),
         getMetrics(tenantId),
+        getOrders(tenantId, 1, 200), // Fetch orders for distribution chart
+        getProducts(tenantId, 1, 50), // Fetch products for top products chart
       ]);
 
       setTenant(tenantData);
       setMetrics(metricsData);
+      setOrders(ordersData.orders);
+      setProducts(productsData.products);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to fetch data");
     } finally {
@@ -69,7 +77,7 @@ export default function TenantDashboardPage() {
   }
 
   return (
-    <div className="space-y-8 max-w-[1600px] mx-auto">
+    <div className="space-y-6 max-w-[1600px] mx-auto">
       {/* Header */}
       <div>
         {loading && !tenant ? (
@@ -162,6 +170,12 @@ export default function TenantDashboardPage() {
           customers={metrics?.topCustomers || []}
           loading={loading}
         />
+      </div>
+
+      {/* Additional Charts */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <OrderValueDistributionChart orders={orders} loading={loading} />
+        <TopProductsChart products={products} loading={loading} />
       </div>
     </div>
   );
