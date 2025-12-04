@@ -148,8 +148,14 @@ export async function getMetrics(tenantId: string, startDate?: string, endDate?:
 }
 
 // Orders
-export async function getOrders(tenantId: string, page = 1, limit = 20) {
-  return fetchFromBackend<PaginatedOrders>(`/tenants/${tenantId}/orders?page=${page}&limit=${limit}`);
+export async function getOrders(tenantId: string, page = 1, limit = 20, startDate?: string, endDate?: string) {
+  const params = new URLSearchParams();
+  params.append("page", page.toString());
+  params.append("limit", limit.toString());
+  if (startDate) params.append("startDate", startDate);
+  if (endDate) params.append("endDate", endDate);
+
+  return fetchFromBackend<PaginatedOrders>(`/tenants/${tenantId}/orders?${params.toString()}`);
 }
 
 // Customers
@@ -166,5 +172,5 @@ export async function getProducts(tenantId: string, page = 1, limit = 20) {
 export async function checkHealth() {
   const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
   const response = await fetch(`${backendUrl}/health`);
-  return response.json();
+  return response.json() as Promise<{ status: string }>;
 }

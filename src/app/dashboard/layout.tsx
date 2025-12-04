@@ -62,8 +62,12 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         } else if (data.length > 0) {
           setSelectedTenant(data[0]);
         }
-      } catch (error) {
-        console.error("Failed to fetch tenants:", error);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          console.error("Failed to fetch tenants:", error.message);
+        } else {
+          console.error("Failed to fetch tenants:", error);
+        }
       } finally {
         setTenantsLoading(false);
       }
@@ -160,9 +164,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
       {/* Mobile Menu */}
       <div
-        className={`lg:hidden fixed top-16 left-0 right-0 z-40 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 transform transition-transform duration-200 ${
-          mobileMenuOpen ? "translate-y-0" : "-translate-y-full"
-        }`}
+        className={`lg:hidden fixed top-16 left-0 right-0 z-40 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 transform transition-transform duration-200 ${mobileMenuOpen ? "translate-y-0" : "-translate-y-full"
+          }`}
       >
         <div className="p-4 space-y-1.5">
           {navItems.map((item) => {
@@ -174,15 +177,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 key={item.label}
                 href={item.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`group relative flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-200 cursor-pointer ${
-                  isActive
-                    ? "bg-gradient-to-r from-zinc-900 to-zinc-800 dark:from-zinc-100 dark:to-zinc-200 text-white dark:text-zinc-900 shadow-lg"
-                    : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                }`}
+                className={`group relative flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-200 cursor-pointer ${isActive
+                  ? "bg-gradient-to-r from-zinc-900 to-zinc-800 dark:from-zinc-100 dark:to-zinc-200 text-white dark:text-zinc-900 shadow-lg"
+                  : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  }`}
               >
-                <item.icon className={`h-5 w-5 transition-transform duration-200 ${
-                  !isActive ? "group-hover:scale-110" : ""
-                }`} />
+                <item.icon className={`h-5 w-5 transition-transform duration-200 ${!isActive ? "group-hover:scale-110" : ""
+                  }`} />
                 <span className="font-medium">{item.label}</span>
                 {isActive && (
                   <span className="ml-auto h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
@@ -228,9 +229,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 </span>
               </div>
               <ChevronDown
-                className={`h-4 w-4 text-zinc-500 dark:text-zinc-400 transition-transform duration-300 ${
-                  showTenantDropdown ? "rotate-180" : "group-hover:translate-y-0.5"
-                }`}
+                className={`h-4 w-4 text-zinc-500 dark:text-zinc-400 transition-transform duration-300 ${showTenantDropdown ? "rotate-180" : "group-hover:translate-y-0.5"
+                  }`}
               />
             </button>
 
@@ -241,20 +241,17 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                     <button
                       key={tenant.id}
                       onClick={() => handleTenantChange(tenant)}
-                      className={`w-full flex items-center gap-3 px-3 py-2.5 text-left rounded-lg transition-all duration-200 cursor-pointer ${
-                        selectedTenant?.id === tenant.id
-                          ? "bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/30 dark:to-teal-900/30 border border-emerald-200 dark:border-emerald-700"
-                          : "hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                      }`}
+                      className={`w-full flex items-center gap-3 px-3 py-2.5 text-left rounded-lg transition-all duration-200 cursor-pointer ${selectedTenant?.id === tenant.id
+                        ? "bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/30 dark:to-teal-900/30 border border-emerald-200 dark:border-emerald-700"
+                        : "hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                        }`}
                     >
-                      <div className={`h-8 w-8 rounded-lg flex items-center justify-center ${
-                        selectedTenant?.id === tenant.id
-                          ? "bg-gradient-to-br from-emerald-400 to-teal-500"
-                          : "bg-zinc-200 dark:bg-zinc-700"
-                      }`}>
-                        <Store className={`h-4 w-4 ${
-                          selectedTenant?.id === tenant.id ? "text-white" : "text-zinc-600 dark:text-zinc-400"
-                        }`} />
+                      <div className={`h-8 w-8 rounded-lg flex items-center justify-center ${selectedTenant?.id === tenant.id
+                        ? "bg-gradient-to-br from-emerald-400 to-teal-500"
+                        : "bg-zinc-200 dark:bg-zinc-700"
+                        }`}>
+                        <Store className={`h-4 w-4 ${selectedTenant?.id === tenant.id ? "text-white" : "text-zinc-600 dark:text-zinc-400"
+                          }`} />
                       </div>
                       <div className="min-w-0">
                         <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-50 truncate">
@@ -297,18 +294,16 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               <Link
                 key={item.label}
                 href={item.href}
-                className={`group relative flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 cursor-pointer ${
-                  isActive
-                    ? "bg-gradient-to-r from-zinc-900 to-zinc-800 dark:from-zinc-100 dark:to-zinc-200 text-white dark:text-zinc-900 shadow-lg shadow-zinc-900/20 dark:shadow-zinc-400/20"
-                    : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100"
-                }`}
+                className={`group relative flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 cursor-pointer ${isActive
+                  ? "bg-gradient-to-r from-zinc-900 to-zinc-800 dark:from-zinc-100 dark:to-zinc-200 text-white dark:text-zinc-900 shadow-lg shadow-zinc-900/20 dark:shadow-zinc-400/20"
+                  : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100"
+                  }`}
               >
                 {isActive && (
                   <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-emerald-400 rounded-r-full" />
                 )}
-                <item.icon className={`h-5 w-5 transition-transform duration-200 ${
-                  !isActive ? "group-hover:scale-110" : ""
-                }`} />
+                <item.icon className={`h-5 w-5 transition-transform duration-200 ${!isActive ? "group-hover:scale-110" : ""
+                  }`} />
                 <span className="font-medium">{item.label}</span>
                 {isActive && (
                   <span className="ml-auto h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />

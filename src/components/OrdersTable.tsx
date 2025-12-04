@@ -1,7 +1,7 @@
 "use client";
 
 import { Order, Pagination, Customer } from "@/lib/api";
-import { formatCurrency, formatDateTime } from "@/lib/utils";
+import { formatCurrency, formatDateTime, formatDate } from "@/lib/utils";
 import {
   Table,
   TableBody,
@@ -79,43 +79,64 @@ export default function OrdersTable({
               </TableCell>
             </TableRow>
           ) : (
-            orders.map((order) => (
-              <TableRow key={order.id}>
-                <TableCell>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="secondary">#{order.orderNumber}</Badge>
-                  </div>
-                </TableCell>
-                <TableCell className="text-zinc-600 dark:text-zinc-400">
-                  {formatDateTime(order.createdAt)}
-                </TableCell>
-                <TableCell>
-                  {(() => {
-                    const customer = customerMap?.get(order.customerId);
-                    if (customer) {
-                      return (
+            (() => {
+              // Group orders by date
+              const groupedOrders = orders.reduce((groups, order) => {
+                const date = formatDate(order.createdAt);
+                if (!groups[date]) {
+                  groups[date] = [];
+                }
+                groups[date].push(order);
+                return groups;
+              }, {} as Record<string, Order[]>);
+
+              return Object.entries(groupedOrders).map(([date, dateOrders]) => (
+                <div key={date} style={{ display: 'contents' }}>
+                  <TableRow className="bg-zinc-50/50 dark:bg-zinc-800/50 hover:bg-zinc-50/50 dark:hover:bg-zinc-800/50">
+                    <TableCell colSpan={4} className="py-2 font-semibold text-xs text-zinc-500 uppercase tracking-wider">
+                      {date}
+                    </TableCell>
+                  </TableRow>
+                  {dateOrders.map((order) => (
+                    <TableRow key={order.id}>
+                      <TableCell>
                         <div className="flex items-center gap-2">
-                          <div className="h-7 w-7 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
-                            <User className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
-                          </div>
-                          <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                            {customer.firstName} {customer.lastName}
-                          </span>
+                          <Badge variant="secondary">#{order.orderNumber}</Badge>
                         </div>
-                      );
-                    }
-                    return (
-                      <span className="text-xs font-mono text-zinc-500 dark:text-zinc-400">
-                        {order.customerId.slice(0, 8)}...
-                      </span>
-                    );
-                  })()}
-                </TableCell>
-                <TableCell className="text-right font-medium">
-                  {formatCurrency(order.total, order.currency)}
-                </TableCell>
-              </TableRow>
-            ))
+                      </TableCell>
+                      <TableCell className="text-zinc-600 dark:text-zinc-400">
+                        {formatDateTime(order.createdAt)}
+                      </TableCell>
+                      <TableCell>
+                        {(() => {
+                          const customer = customerMap?.get(order.customerId);
+                          if (customer) {
+                            return (
+                              <div className="flex items-center gap-2">
+                                <div className="h-7 w-7 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
+                                  <User className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                                </div>
+                                <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                                  {customer.firstName} {customer.lastName}
+                                </span>
+                              </div>
+                            );
+                          }
+                          return (
+                            <span className="text-xs font-mono text-zinc-500 dark:text-zinc-400">
+                              {order.customerId.slice(0, 8)}...
+                            </span>
+                          );
+                        })()}
+                      </TableCell>
+                      <TableCell className="text-right font-medium">
+                        {formatCurrency(order.total, "INR")}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </div>
+              ));
+            })()
           )}
         </TableBody>
       </Table>

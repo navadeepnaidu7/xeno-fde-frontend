@@ -89,7 +89,7 @@ export default function Home() {
               <div className="p-8">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                   {[
-                    { label: "Total Revenue", value: "$124,563.00", change: "+12.5%" },
+                    { label: "Total Revenue", value: "₹1,24,563.00", change: "+12.5%" },
                     { label: "Total Customers", value: "2,451", change: "+8.2%" },
                     { label: "Total Orders", value: "4,891", change: "+15.3%" },
                   ].map((stat, i) => (
