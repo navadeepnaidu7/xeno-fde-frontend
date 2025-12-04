@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { getOrders, Order, Pagination, getTenant, Tenant } from "@/lib/api";
+import { getOrders, getCustomers, Order, Customer, Pagination, getTenant, Tenant } from "@/lib/api";
 import OrdersTable from "@/components/OrdersTable";
 
 export default function OrdersPage() {
@@ -11,6 +11,7 @@ export default function OrdersPage() {
 
   const [tenant, setTenant] = useState<Tenant | null>(null);
   const [orders, setOrders] = useState<Order[]>([]);
+  const [customers, setCustomers] = useState<Map<string, Customer>>(new Map());
   const [pagination, setPagination] = useState<Pagination>({
     page: 1,
     limit: 20,
@@ -19,6 +20,20 @@ export default function OrdersPage() {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Fetch all customers to create a lookup map
+  async function fetchCustomers() {
+    try {
+      const customersData = await getCustomers(tenantId, 1, 100);
+      const customerMap = new Map<string, Customer>();
+      customersData.customers.forEach((customer) => {
+        customerMap.set(customer.id, customer);
+      });
+      setCustomers(customerMap);
+    } catch (err) {
+      console.error("Failed to fetch customers:", err);
+    }
+  }
 
   async function fetchOrders(page: number) {
     try {
@@ -45,6 +60,7 @@ export default function OrdersPage() {
   useEffect(() => {
     if (tenantId) {
       fetchOrders(1);
+      fetchCustomers();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tenantId]);
@@ -90,6 +106,7 @@ export default function OrdersPage() {
         pagination={pagination}
         onPageChange={handlePageChange}
         loading={loading}
+        customerMap={customers}
       />
     </div>
   );

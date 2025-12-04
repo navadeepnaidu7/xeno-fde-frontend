@@ -1,6 +1,6 @@
 "use client";
 
-import { Order, Pagination } from "@/lib/api";
+import { Order, Pagination, Customer } from "@/lib/api";
 import { formatCurrency, formatDateTime } from "@/lib/utils";
 import {
   Table,
@@ -12,13 +12,14 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, User } from "lucide-react";
 
 interface OrdersTableProps {
   orders: Order[];
   pagination: Pagination;
   onPageChange: (page: number) => void;
   loading?: boolean;
+  customerMap?: Map<string, Customer>;
 }
 
 export default function OrdersTable({
@@ -26,6 +27,7 @@ export default function OrdersTable({
   pagination,
   onPageChange,
   loading = false,
+  customerMap,
 }: OrdersTableProps) {
   if (loading) {
     return (
@@ -63,7 +65,7 @@ export default function OrdersTable({
           <TableRow>
             <TableHead>Order</TableHead>
             <TableHead>Date</TableHead>
-            <TableHead>Customer ID</TableHead>
+            <TableHead>Customer</TableHead>
             <TableHead className="text-right">Amount</TableHead>
           </TableRow>
         </TableHeader>
@@ -88,9 +90,26 @@ export default function OrdersTable({
                   {formatDateTime(order.createdAt)}
                 </TableCell>
                 <TableCell>
-                  <span className="text-xs font-mono text-zinc-500 dark:text-zinc-400">
-                    {order.customerId.slice(0, 8)}...
-                  </span>
+                  {(() => {
+                    const customer = customerMap?.get(order.customerId);
+                    if (customer) {
+                      return (
+                        <div className="flex items-center gap-2">
+                          <div className="h-7 w-7 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
+                            <User className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                          </div>
+                          <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                            {customer.firstName} {customer.lastName}
+                          </span>
+                        </div>
+                      );
+                    }
+                    return (
+                      <span className="text-xs font-mono text-zinc-500 dark:text-zinc-400">
+                        {order.customerId.slice(0, 8)}...
+                      </span>
+                    );
+                  })()}
                 </TableCell>
                 <TableCell className="text-right font-medium">
                   {formatCurrency(order.total, order.currency)}

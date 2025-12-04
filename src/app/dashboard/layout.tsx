@@ -164,7 +164,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           mobileMenuOpen ? "translate-y-0" : "-translate-y-full"
         }`}
       >
-        <div className="p-4 space-y-2">
+        <div className="p-4 space-y-1.5">
           {navItems.map((item) => {
             const isActive =
               pathname === item.href ||
@@ -174,22 +174,27 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 key={item.label}
                 href={item.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors cursor-pointer ${
+                className={`group relative flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-200 cursor-pointer ${
                   isActive
-                    ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-50"
-                    : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+                    ? "bg-gradient-to-r from-zinc-900 to-zinc-800 dark:from-zinc-100 dark:to-zinc-200 text-white dark:text-zinc-900 shadow-lg"
+                    : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
                 }`}
               >
-                <item.icon className="h-5 w-5" />
+                <item.icon className={`h-5 w-5 transition-transform duration-200 ${
+                  !isActive ? "group-hover:scale-110" : ""
+                }`} />
                 <span className="font-medium">{item.label}</span>
+                {isActive && (
+                  <span className="ml-auto h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+                )}
               </Link>
             );
           })}
           <button
             onClick={handleSignOut}
-            className="flex items-center gap-3 px-4 py-3 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 w-full cursor-pointer"
+            className="flex items-center gap-3 px-4 py-3.5 rounded-xl text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 w-full cursor-pointer transition-all duration-200 group"
           >
-            <LogOut className="h-5 w-5" />
+            <LogOut className="h-5 w-5 group-hover:scale-110 transition-transform duration-200" />
             <span className="font-medium">Sign out</span>
           </button>
         </div>
@@ -212,53 +217,68 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           <div className="relative">
             <button
               onClick={() => setShowTenantDropdown(!showTenantDropdown)}
-              className="w-full flex items-center justify-between gap-2 px-3 py-2.5 rounded-lg border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 transition-colors cursor-pointer"
+              className="w-full flex items-center justify-between gap-2 px-4 py-3 rounded-xl border-2 border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 bg-zinc-50 dark:bg-zinc-800/50 transition-all duration-200 cursor-pointer group hover:shadow-md"
             >
-              <div className="flex items-center gap-2 min-w-0">
-                <Store className="h-4 w-4 text-zinc-500 dark:text-zinc-400 flex-shrink-0" />
-                <span className="text-sm font-medium text-zinc-900 dark:text-zinc-50 truncate">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center shadow-sm">
+                  <Store className="h-4 w-4 text-white" />
+                </div>
+                <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-50 truncate">
                   {selectedTenant?.name || "Select store"}
                 </span>
               </div>
               <ChevronDown
-                className={`h-4 w-4 text-zinc-500 dark:text-zinc-400 transition-transform ${
-                  showTenantDropdown ? "rotate-180" : ""
+                className={`h-4 w-4 text-zinc-500 dark:text-zinc-400 transition-transform duration-300 ${
+                  showTenantDropdown ? "rotate-180" : "group-hover:translate-y-0.5"
                 }`}
               />
             </button>
 
             {showTenantDropdown && (
-              <div className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg shadow-lg z-50 overflow-hidden">
-                <div className="max-h-48 overflow-y-auto">
+              <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-700 rounded-xl shadow-xl shadow-zinc-200/50 dark:shadow-zinc-900/50 z-50 overflow-hidden backdrop-blur-sm">
+                <div className="max-h-48 overflow-y-auto p-2">
                   {tenants.map((tenant) => (
                     <button
                       key={tenant.id}
                       onClick={() => handleTenantChange(tenant)}
-                      className={`w-full flex items-center gap-2 px-3 py-2.5 text-left hover:bg-zinc-50 dark:hover:bg-zinc-800 cursor-pointer ${
+                      className={`w-full flex items-center gap-3 px-3 py-2.5 text-left rounded-lg transition-all duration-200 cursor-pointer ${
                         selectedTenant?.id === tenant.id
-                          ? "bg-zinc-50 dark:bg-zinc-800"
-                          : ""
+                          ? "bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/30 dark:to-teal-900/30 border border-emerald-200 dark:border-emerald-700"
+                          : "hover:bg-zinc-100 dark:hover:bg-zinc-800"
                       }`}
                     >
-                      <Store className="h-4 w-4 text-zinc-500 dark:text-zinc-400" />
+                      <div className={`h-8 w-8 rounded-lg flex items-center justify-center ${
+                        selectedTenant?.id === tenant.id
+                          ? "bg-gradient-to-br from-emerald-400 to-teal-500"
+                          : "bg-zinc-200 dark:bg-zinc-700"
+                      }`}>
+                        <Store className={`h-4 w-4 ${
+                          selectedTenant?.id === tenant.id ? "text-white" : "text-zinc-600 dark:text-zinc-400"
+                        }`} />
+                      </div>
                       <div className="min-w-0">
-                        <p className="text-sm font-medium text-zinc-900 dark:text-zinc-50 truncate">
+                        <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-50 truncate">
                           {tenant.name}
                         </p>
                         <p className="text-xs text-zinc-500 dark:text-zinc-400 truncate">
                           {tenant.shopDomain}
                         </p>
                       </div>
+                      {selectedTenant?.id === tenant.id && (
+                        <span className="ml-auto h-2 w-2 rounded-full bg-emerald-500" />
+                      )}
                     </button>
                   ))}
                 </div>
                 <Link
                   href={selectedTenant ? `/dashboard/${selectedTenant.id}/settings` : "/dashboard"}
                   onClick={() => setShowTenantDropdown(false)}
-                  className="flex items-center gap-2 px-3 py-2.5 border-t border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800 cursor-pointer"
+                  className="flex items-center gap-3 px-4 py-3 border-t-2 border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 cursor-pointer transition-all duration-200 group"
                 >
-                  <Plus className="h-4 w-4 text-zinc-500 dark:text-zinc-400" />
-                  <span className="text-sm text-zinc-600 dark:text-zinc-400">
+                  <div className="h-8 w-8 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center group-hover:bg-emerald-100 dark:group-hover:bg-emerald-900/30 transition-colors duration-200">
+                    <Plus className="h-4 w-4 text-zinc-500 dark:text-zinc-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors duration-200" />
+                  </div>
+                  <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors duration-200">
                     Add new store
                   </span>
                 </Link>
@@ -268,7 +288,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 p-4 space-y-1">
+        <nav className="flex-1 p-4 space-y-1.5">
           {navItems.map((item) => {
             const isActive =
               pathname === item.href ||
@@ -277,14 +297,22 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               <Link
                 key={item.label}
                 href={item.href}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors cursor-pointer ${
+                className={`group relative flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 cursor-pointer ${
                   isActive
-                    ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-50"
-                    : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+                    ? "bg-gradient-to-r from-zinc-900 to-zinc-800 dark:from-zinc-100 dark:to-zinc-200 text-white dark:text-zinc-900 shadow-lg shadow-zinc-900/20 dark:shadow-zinc-400/20"
+                    : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100"
                 }`}
               >
-                <item.icon className="h-5 w-5" />
+                {isActive && (
+                  <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-emerald-400 rounded-r-full" />
+                )}
+                <item.icon className={`h-5 w-5 transition-transform duration-200 ${
+                  !isActive ? "group-hover:scale-110" : ""
+                }`} />
                 <span className="font-medium">{item.label}</span>
+                {isActive && (
+                  <span className="ml-auto h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+                )}
               </Link>
             );
           })}
@@ -309,9 +337,9 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             variant="ghost"
             size="sm"
             onClick={handleSignOut}
-            className="w-full justify-start text-red-600 dark:text-red-400 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/30"
+            className="w-full justify-start text-red-600 dark:text-red-400 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-xl transition-all duration-200 group"
           >
-            <LogOut className="h-4 w-4 mr-2" />
+            <LogOut className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform duration-200" />
             Sign out
           </Button>
         </div>
