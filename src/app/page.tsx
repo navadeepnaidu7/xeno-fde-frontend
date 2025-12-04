@@ -63,7 +63,7 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link href="/auth/signin">
                 <Button size="xl" className="gap-2">
-                  Start Free Trial
+                  Sign In
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               </Link>
@@ -174,7 +174,7 @@ export default function Home() {
             ].map((feature, i) => (
               <div
                 key={i}
-                className="group p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all duration-200 hover:shadow-lg"
+                className="group p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all duration-200 hover:shadow-lg cursor-pointer"
               >
                 <div className="h-12 w-12 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center mb-6 group-hover:bg-zinc-200 dark:group-hover:bg-zinc-700 transition-colors">
                   <feature.icon className="h-6 w-6 text-zinc-900 dark:text-zinc-50" />

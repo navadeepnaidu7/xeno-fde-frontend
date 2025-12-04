@@ -7,7 +7,7 @@ import { formatCurrency, formatNumber } from "@/lib/utils";
 import MetricsCard from "@/components/MetricsCard";
 import RevenueChart from "@/components/RevenueChart";
 import TopCustomersTable from "@/components/TopCustomersTable";
-import { DollarSign, Users, ShoppingCart, TrendingUp } from "lucide-react";
+import { DollarSign, Users, ShoppingCart, TrendingUp, Target, Repeat } from "lucide-react";
 
 export default function TenantDashboardPage() {
   const params = useParams();
@@ -87,7 +87,7 @@ export default function TenantDashboardPage() {
       </div>
 
       {/* Key Metrics */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <MetricsCard
           label="Total Revenue"
           value={loading ? "" : formatCurrency(metrics?.totalRevenue || 0)}
@@ -118,6 +118,32 @@ export default function TenantDashboardPage() {
                 )
           }
           icon={TrendingUp}
+          loading={loading}
+        />
+        <MetricsCard
+          label="Revenue per Customer"
+          value={
+            loading
+              ? ""
+              : formatCurrency(
+                  metrics?.customersCount
+                    ? (metrics.totalRevenue || 0) / metrics.customersCount
+                    : 0
+                )
+          }
+          icon={Target}
+          loading={loading}
+        />
+        <MetricsCard
+          label="Orders per Customer"
+          value={
+            loading
+              ? ""
+              : (metrics?.customersCount
+                  ? ((metrics.ordersCount || 0) / metrics.customersCount).toFixed(1)
+                  : "0")
+          }
+          icon={Repeat}
           loading={loading}
         />
       </div>

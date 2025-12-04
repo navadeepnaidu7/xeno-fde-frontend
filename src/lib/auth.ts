@@ -41,4 +41,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     strategy: "jwt",
   },
   trustHost: true,
+  // Ensure proper redirect after signout
+  events: {
+    async signOut() {
+      // Event handler for signout
+    },
+  },
 });

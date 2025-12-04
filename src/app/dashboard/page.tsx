@@ -82,7 +82,7 @@ export default function DashboardPage() {
           <Link
             key={tenant.id}
             href={`/dashboard/${tenant.id}`}
-            className="group p-6 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all duration-200 hover:shadow-lg"
+            className="group p-6 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all duration-200 hover:shadow-lg cursor-pointer"
           >
             <div className="flex items-start justify-between mb-4">
               <div className="h-12 w-12 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
@@ -101,7 +101,7 @@ export default function DashboardPage() {
 
         <Link
           href="/dashboard/new"
-          className="group p-6 bg-zinc-50 dark:bg-zinc-900/50 rounded-xl border-2 border-dashed border-zinc-300 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-600 transition-all duration-200 flex flex-col items-center justify-center text-center min-h-[160px]"
+          className="group p-6 bg-zinc-50 dark:bg-zinc-900/50 rounded-xl border-2 border-dashed border-zinc-300 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-600 transition-all duration-200 flex flex-col items-center justify-center text-center min-h-[160px] cursor-pointer"
         >
           <div className="h-12 w-12 rounded-xl bg-zinc-200 dark:bg-zinc-800 flex items-center justify-center mb-4 group-hover:bg-zinc-300 dark:group-hover:bg-zinc-700 transition-colors">
             <Plus className="h-6 w-6 text-zinc-600 dark:text-zinc-400" />

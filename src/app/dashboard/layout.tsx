@@ -83,7 +83,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   };
 
   const handleSignOut = async () => {
-    await signOut({ callbackUrl: "/" });
+    await signOut({ redirect: true, callbackUrl: "/" });
   };
 
   if (status === "loading" || tenantsLoading) {
@@ -139,7 +139,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           </div>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800"
+            className="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer"
           >
             {mobileMenuOpen ? (
               <X className="h-5 w-5 text-zinc-600 dark:text-zinc-400" />
@@ -174,7 +174,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 key={item.label}
                 href={item.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors cursor-pointer ${
                   isActive
                     ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-50"
                     : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
@@ -187,7 +187,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           })}
           <button
             onClick={handleSignOut}
-            className="flex items-center gap-3 px-4 py-3 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 w-full"
+            className="flex items-center gap-3 px-4 py-3 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 w-full cursor-pointer"
           >
             <LogOut className="h-5 w-5" />
             <span className="font-medium">Sign out</span>
@@ -212,7 +212,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           <div className="relative">
             <button
               onClick={() => setShowTenantDropdown(!showTenantDropdown)}
-              className="w-full flex items-center justify-between gap-2 px-3 py-2.5 rounded-lg border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 transition-colors"
+              className="w-full flex items-center justify-between gap-2 px-3 py-2.5 rounded-lg border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 transition-colors cursor-pointer"
             >
               <div className="flex items-center gap-2 min-w-0">
                 <Store className="h-4 w-4 text-zinc-500 dark:text-zinc-400 flex-shrink-0" />
@@ -234,7 +234,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                     <button
                       key={tenant.id}
                       onClick={() => handleTenantChange(tenant)}
-                      className={`w-full flex items-center gap-2 px-3 py-2.5 text-left hover:bg-zinc-50 dark:hover:bg-zinc-800 ${
+                      className={`w-full flex items-center gap-2 px-3 py-2.5 text-left hover:bg-zinc-50 dark:hover:bg-zinc-800 cursor-pointer ${
                         selectedTenant?.id === tenant.id
                           ? "bg-zinc-50 dark:bg-zinc-800"
                           : ""
@@ -255,7 +255,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 <Link
                   href={selectedTenant ? `/dashboard/${selectedTenant.id}/settings` : "/dashboard"}
                   onClick={() => setShowTenantDropdown(false)}
-                  className="flex items-center gap-2 px-3 py-2.5 border-t border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800"
+                  className="flex items-center gap-2 px-3 py-2.5 border-t border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800 cursor-pointer"
                 >
                   <Plus className="h-4 w-4 text-zinc-500 dark:text-zinc-400" />
                   <span className="text-sm text-zinc-600 dark:text-zinc-400">
@@ -277,7 +277,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               <Link
                 key={item.label}
                 href={item.href}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors cursor-pointer ${
                   isActive
                     ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-50"
                     : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
