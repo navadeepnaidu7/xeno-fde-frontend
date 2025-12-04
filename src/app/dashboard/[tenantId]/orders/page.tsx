@@ -14,6 +14,7 @@ export default function OrdersPage() {
 
   const [tenant, setTenant] = useState<Tenant | null>(null);
   const [orders, setOrders] = useState<Order[]>([]);
+  const [filteredOrders, setFilteredOrders] = useState<Order[]>([]);
   const [customers, setCustomers] = useState<Map<string, Customer>>(new Map());
   const [pagination, setPagination] = useState<Pagination>({
     page: 1,
@@ -73,12 +74,51 @@ export default function OrdersPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tenantId]);
 
+  // Client-side date filtering (fallback if backend doesn't filter)
+  useEffect(() => {
+    if (!startDate && !endDate) {
+      setFilteredOrders(orders);
+      return;
+    }
+
+    const filtered = orders.filter((order) => {
+      const orderDate = new Date(order.createdAt);
+      const orderDateStr = orderDate.toISOString().split('T')[0];
+
+      if (startDate && endDate) {
+        return orderDateStr >= startDate && orderDateStr <= endDate;
+      } else if (startDate) {
+        return orderDateStr >= startDate;
+      } else if (endDate) {
+        return orderDateStr <= endDate;
+      }
+      return true;
+    });
+
+    setFilteredOrders(filtered);
+  }, [orders, startDate, endDate]);
+
   const handlePageChange = (newPage: number) => {
-    fetchOrders(newPage, startDate || undefined, endDate || undefined);
+    // When filtering is active, don't paginate since we're filtering client-side
+    if (startDate || endDate) {
+      return;
+    }
+    fetchOrders(newPage);
   };
 
-  const handleApplyDateFilter = () => {
-    fetchOrders(1, startDate || undefined, endDate || undefined);
+  const handleApplyDateFilter = async () => {
+    // When applying filter, fetch more orders to filter client-side
+    // This is a workaround until the backend supports date filtering
+    try {
+      setLoading(true);
+      const ordersData = await getOrders(tenantId, 1, 500); // Fetch up to 500 orders
+      setOrders(ordersData.orders);
+      setPagination(ordersData.pagination);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to fetch orders");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleClearDateFilter = () => {
@@ -129,8 +169,8 @@ export default function OrdersPage() {
             variant={showDateFilter || startDate || endDate ? "secondary" : "outline"}
             onClick={() => setShowDateFilter(!showDateFilter)}
             className={`gap-2 transition-all duration-300 ${startDate || endDate
-                ? "bg-zinc-900 text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
-                : ""
+              ? "bg-zinc-900 text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+              : ""
               }`}
           >
             {showDateFilter ? <X className="h-4 w-4" /> : <Filter className="h-4 w-4" />}
@@ -203,8 +243,12 @@ export default function OrdersPage() {
 
       {/* Orders Table */}
       <OrdersTable
-        orders={orders}
-        pagination={pagination}
+        orders={filteredOrders}
+        pagination={{
+          ...pagination,
+          totalCount: startDate || endDate ? filteredOrders.length : pagination.totalCount,
+          totalPages: startDate || endDate ? 1 : pagination.totalPages,
+        }}
         onPageChange={handlePageChange}
         loading={loading}
         customerMap={customers}

@@ -185,9 +185,6 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 <item.icon className={`h-5 w-5 transition-transform duration-200 ${!isActive ? "group-hover:scale-110" : ""
                   }`} />
                 <span className="font-medium">{item.label}</span>
-                {isActive && (
-                  <span className="ml-auto h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-                )}
               </Link>
             );
           })}
@@ -299,15 +296,9 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                   : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100"
                   }`}
               >
-                {isActive && (
-                  <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-emerald-400 rounded-r-full" />
-                )}
                 <item.icon className={`h-5 w-5 transition-transform duration-200 ${!isActive ? "group-hover:scale-110" : ""
                   }`} />
                 <span className="font-medium">{item.label}</span>
-                {isActive && (
-                  <span className="ml-auto h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-                )}
               </Link>
             );
           })}
