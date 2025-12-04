@@ -87,7 +87,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   };
 
   const handleSignOut = async () => {
-    await signOut({ redirect: true, callbackUrl: "/" });
+    await signOut({ redirect: false });
+    window.location.href = "/";
   };
 
   if (status === "loading" || tenantsLoading) {
