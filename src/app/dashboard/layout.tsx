@@ -11,6 +11,7 @@ import {
   LayoutDashboard,
   ShoppingCart,
   Users,
+  Package,
   Settings,
   LogOut,
   ChevronDown,
@@ -123,6 +124,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       icon: Users,
       label: "Customers",
       href: selectedTenant ? `/dashboard/${selectedTenant.id}/customers` : "/dashboard",
+    },
+    {
+      icon: Package,
+      label: "Products",
+      href: selectedTenant ? `/dashboard/${selectedTenant.id}/products` : "/dashboard",
     },
     {
       icon: Settings,
