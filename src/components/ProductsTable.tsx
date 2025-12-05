@@ -97,7 +97,7 @@ export default function ProductsTable({
                         {product.title}
                       </p>
                       <p className="text-xs text-zinc-500 dark:text-zinc-400 font-mono">
-                        ID: {product.shopifyProductId.slice(-8)}
+                        ID: {(product.shopifyProductId || product.id || "—").slice(-8)}
                       </p>
                     </div>
                   </div>
