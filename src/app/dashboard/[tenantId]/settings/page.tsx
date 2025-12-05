@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { getTenant, createTenant, Tenant, CreateTenantInput } from "@/lib/api";
+import { getTenant, createTenant, triggerSync, getSyncStatus, Tenant, CreateTenantInput, SyncResult, SyncStatus } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { formatDate } from "@/lib/utils";
-import { Store, Globe, Calendar, Key, Loader2, Plus, Check } from "lucide-react";
+import { Store, Globe, Calendar, Key, Loader2, Plus, Check, RefreshCw, Package, Users, ShoppingCart } from "lucide-react";
 
 export default function SettingsPage() {
   const params = useParams();
@@ -16,6 +16,12 @@ export default function SettingsPage() {
   const [tenant, setTenant] = useState<Tenant | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Sync state
+  const [syncing, setSyncing] = useState(false);
+  const [syncResult, setSyncResult] = useState<SyncResult | null>(null);
+  const [syncError, setSyncError] = useState<string | null>(null);
+  const [syncStatus, setSyncStatus] = useState<SyncStatus | null>(null);
 
   // New tenant form state
   const [showNewTenantForm, setShowNewTenantForm] = useState(false);
@@ -33,8 +39,12 @@ export default function SettingsPage() {
     async function fetchTenant() {
       try {
         setLoading(true);
-        const data = await getTenant(tenantId);
-        setTenant(data);
+        const [tenantData, statusData] = await Promise.all([
+          getTenant(tenantId),
+          getSyncStatus(tenantId).catch(() => null),
+        ]);
+        setTenant(tenantData);
+        if (statusData) setSyncStatus(statusData);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to fetch tenant");
       } finally {
@@ -49,6 +59,24 @@ export default function SettingsPage() {
       setLoading(false);
     }
   }, [tenantId]);
+
+  const handleSync = async () => {
+    setSyncing(true);
+    setSyncResult(null);
+    setSyncError(null);
+
+    try {
+      const result = await triggerSync(tenantId);
+      setSyncResult(result);
+      // Refresh sync status after successful sync
+      const statusData = await getSyncStatus(tenantId).catch(() => null);
+      if (statusData) setSyncStatus(statusData);
+    } catch (err) {
+      setSyncError(err instanceof Error ? err.message : "Sync failed");
+    } finally {
+      setSyncing(false);
+    }
+  };
 
   const handleCreateTenant = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -185,6 +213,105 @@ export default function SettingsPage() {
                   {tenant.id}
                 </p>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Sync Data Section */}
+      {tenant && !showNewTenantForm && (
+        <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden">
+          <div className="p-6 border-b border-zinc-200 dark:border-zinc-800">
+            <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
+              Sync Data
+            </h2>
+            <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+              Sync products, customers, and orders from your Shopify store
+            </p>
+          </div>
+          <div className="p-6 space-y-6">
+            {/* Current Data Counts */}
+            {syncStatus && (
+              <div className="grid grid-cols-3 gap-4">
+                <div className="flex items-center gap-3 p-4 rounded-lg bg-zinc-50 dark:bg-zinc-800/50">
+                  <div className="h-10 w-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                    <Package className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">{syncStatus.counts.products}</p>
+                    <p className="text-sm text-zinc-500 dark:text-zinc-400">Products</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 p-4 rounded-lg bg-zinc-50 dark:bg-zinc-800/50">
+                  <div className="h-10 w-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                    <Users className="h-5 w-5 text-green-600 dark:text-green-400" />
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">{syncStatus.counts.customers}</p>
+                    <p className="text-sm text-zinc-500 dark:text-zinc-400">Customers</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 p-4 rounded-lg bg-zinc-50 dark:bg-zinc-800/50">
+                  <div className="h-10 w-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+                    <ShoppingCart className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">{syncStatus.counts.orders}</p>
+                    <p className="text-sm text-zinc-500 dark:text-zinc-400">Orders</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Sync Button and Result */}
+            <div className="flex flex-col gap-4">
+              <Button
+                onClick={handleSync}
+                disabled={syncing}
+                className="w-fit gap-2"
+              >
+                {syncing ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Syncing...
+                  </>
+                ) : (
+                  <>
+                    <RefreshCw className="h-4 w-4" />
+                    Sync Now
+                  </>
+                )}
+              </Button>
+
+              {/* Success Message */}
+              {syncResult && syncResult.success && (
+                <div className="flex items-center gap-3 p-4 bg-green-50 dark:bg-green-950/30 rounded-lg border border-green-200 dark:border-green-800">
+                  <div className="h-8 w-8 rounded-full bg-green-100 dark:bg-green-900/50 flex items-center justify-center">
+                    <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-green-800 dark:text-green-300">
+                      Sync completed successfully!
+                    </p>
+                    <p className="text-sm text-green-600 dark:text-green-400">
+                      Dashboard data updated with latest data
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Error Message */}
+              {syncError && (
+                <div className="p-3 rounded-lg bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-800">
+                  <p className="text-sm text-red-600 dark:text-red-400">
+                    {syncError}
+                  </p>
+                </div>
+              )}
+
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                Data is automatically synced every 6 hours. Use this button to manually refresh data from Shopify.
+              </p>
             </div>
           </div>
         </div>

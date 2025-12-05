@@ -12,6 +12,7 @@ import {
   ShoppingCart,
   Users,
   Package,
+  BarChart3,
   Settings,
   LogOut,
   ChevronDown,
@@ -129,6 +130,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       icon: Package,
       label: "Products",
       href: selectedTenant ? `/dashboard/${selectedTenant.id}/products` : "/dashboard",
+    },
+    {
+      icon: BarChart3,
+      label: "Analytics",
+      href: selectedTenant ? `/dashboard/${selectedTenant.id}/analytics` : "/dashboard",
     },
     {
       icon: Settings,
