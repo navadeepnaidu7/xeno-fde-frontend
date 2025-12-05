@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { BarChart3, ArrowLeft, Loader2 } from "lucide-react";
+import { Hexagon, ArrowLeft, Loader2 } from "lucide-react";
 
 export default function SignInPage() {
   const [email, setEmail] = useState("");
@@ -62,7 +62,7 @@ export default function SignInPage() {
           {/* Logo */}
           <div className="flex items-center justify-center gap-3 mb-8">
             <div className="h-12 w-12 rounded-xl bg-zinc-900 dark:bg-zinc-50 flex items-center justify-center">
-              <BarChart3 className="h-7 w-7 text-white dark:text-zinc-900" />
+              <Hexagon className="h-7 w-7 text-white dark:text-zinc-900" />
             </div>
             <span className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">
               Xeno

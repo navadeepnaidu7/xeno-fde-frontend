@@ -1,6 +1,6 @@
 "use client";
 
-import { BarChart3 } from "lucide-react";
+import { Hexagon } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function DashboardLoading() {
@@ -20,7 +20,7 @@ export default function DashboardLoading() {
                     className="relative"
                 >
                     <div className="h-16 w-16 rounded-2xl bg-zinc-900 dark:bg-zinc-50 flex items-center justify-center shadow-xl">
-                        <BarChart3 className="h-8 w-8 text-white dark:text-zinc-900" />
+                        <Hexagon className="h-8 w-8 text-white dark:text-zinc-900" />
                     </div>
                     {/* Pulse ring */}
                     <motion.div

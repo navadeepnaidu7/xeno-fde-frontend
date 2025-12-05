@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
   ArrowRight,
+  Hexagon,
   BarChart3,
   Users,
   ShoppingCart,
@@ -19,7 +20,7 @@ export default function Home() {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-2">
               <div className="h-8 w-8 rounded-lg bg-zinc-900 dark:bg-zinc-50 flex items-center justify-center">
-                <BarChart3 className="h-5 w-5 text-white dark:text-zinc-900" />
+                <Hexagon className="h-5 w-5 text-white dark:text-zinc-900" />
               </div>
               <span className="text-xl font-bold text-zinc-900 dark:text-zinc-50">
                 Xeno
@@ -81,7 +82,7 @@ export default function Home() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
               </span>
-                Supports multi-tenant analytics
+              Supports multi-tenant analytics
             </div>
 
             <h1 className="text-5xl md:text-7xl font-bold text-zinc-900 dark:text-zinc-50 mb-8 tracking-tight leading-[1.1] animate-fade-in" style={{ animationDelay: "0.1s" }}>
@@ -248,19 +249,53 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-zinc-200 dark:border-zinc-800 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-lg bg-zinc-900 dark:bg-zinc-50 flex items-center justify-center">
-              <BarChart3 className="h-5 w-5 text-white dark:text-zinc-900" />
+      <footer className="border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {/* Brand */}
+            <div className="md:col-span-2">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="h-8 w-8 rounded-lg bg-zinc-900 dark:bg-zinc-50 flex items-center justify-center">
+                  <Hexagon className="h-5 w-5 text-white dark:text-zinc-900" />
+                </div>
+                <span className="text-lg font-bold text-zinc-900 dark:text-zinc-50">
+                  Xeno
+                </span>
+              </div>
+              <p className="text-sm text-zinc-600 dark:text-zinc-400 max-w-xs">
+                Modern analytics dashboard for Shopify stores. Track revenue, understand customers, and grow your business.
+              </p>
             </div>
-            <span className="text-lg font-bold text-zinc-900 dark:text-zinc-50">
-              Xeno
-            </span>
+
+            {/* Links */}
+            <div>
+              <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50 mb-4">Product</h3>
+              <ul className="space-y-2">
+                <li><Link href="#features" className="text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors">Features</Link></li>
+                <li><Link href="/auth/signin" className="text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors">Dashboard</Link></li>
+              </ul>
+            </div>
+
+            {/* Connect */}
+            <div>
+              <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50 mb-4">Socials</h3>
+              <ul className="space-y-2">
+                <li><a href="https://github.com/navadeepnaidu7" target="_blank" rel="noopener noreferrer" className="text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors">GitHub</a></li>
+                <li><a href="https://linkedin.com/in/navadeepnaidu7" target="_blank" rel="noopener noreferrer" className="text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors">LinkedIn</a></li>
+                <li><a href="https://x.com/navadeep_naidu7" target="_blank" rel="noopener noreferrer" className="text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors">Twitter</a></li>
+              </ul>
+            </div>
           </div>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">
-            Built for the Xeno FDE Assignment 2025
-          </p>
+
+          {/* Bottom Bar */}
+          <div className="mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="text-sm text-zinc-500 dark:text-zinc-400">
+              © 2025 Xeno Analytics. All rights reserved.
+            </p>
+            <p className="text-sm text-zinc-500 dark:text-zinc-400">
+              Built by <span className="font-medium text-zinc-700 dark:text-zinc-300">Navadeep Naidu</span> for Xeno FDE Assignment
+            </p>
+          </div>
         </div>
       </footer>
     </div>

@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { getTenants, Tenant } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import {
-  BarChart3,
+  Hexagon,
   LayoutDashboard,
   ShoppingCart,
   Users,
@@ -97,7 +97,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <div className="h-12 w-12 rounded-xl bg-zinc-900 dark:bg-zinc-50 flex items-center justify-center animate-pulse">
-            <BarChart3 className="h-7 w-7 text-white dark:text-zinc-900" />
+            <Hexagon className="h-7 w-7 text-white dark:text-zinc-900" />
           </div>
           <p className="text-zinc-500 dark:text-zinc-400">Loading...</p>
         </div>
@@ -144,7 +144,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         <div className="flex items-center justify-between h-16 px-4">
           <div className="flex items-center gap-2">
             <div className="h-8 w-8 rounded-lg bg-zinc-900 dark:bg-zinc-50 flex items-center justify-center">
-              <BarChart3 className="h-5 w-5 text-white dark:text-zinc-900" />
+              <Hexagon className="h-5 w-5 text-white dark:text-zinc-900" />
             </div>
             <span className="font-bold text-zinc-900 dark:text-zinc-50">Xeno</span>
           </div>
@@ -210,7 +210,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         {/* Logo */}
         <div className="flex items-center gap-2 px-6 h-16 border-b border-zinc-200 dark:border-zinc-800">
           <div className="h-8 w-8 rounded-lg bg-zinc-900 dark:bg-zinc-50 flex items-center justify-center">
-            <BarChart3 className="h-5 w-5 text-white dark:text-zinc-900" />
+            <Hexagon className="h-5 w-5 text-white dark:text-zinc-900" />
           </div>
           <span className="text-xl font-bold text-zinc-900 dark:text-zinc-50">
             Xeno
