@@ -23,7 +23,7 @@ export default function Home() {
                 <Hexagon className="h-5 w-5 text-white dark:text-zinc-900" />
               </div>
               <span className="text-xl font-bold text-zinc-900 dark:text-zinc-50">
-                Xeno
+                XDIA
               </span>
             </div>
             <div className="flex items-center gap-4">
@@ -259,7 +259,7 @@ export default function Home() {
                   <Hexagon className="h-5 w-5 text-white dark:text-zinc-900" />
                 </div>
                 <span className="text-lg font-bold text-zinc-900 dark:text-zinc-50">
-                  Xeno
+                  XDIA
                 </span>
               </div>
               <p className="text-sm text-zinc-600 dark:text-zinc-400 max-w-xs">
@@ -288,10 +288,7 @@ export default function Home() {
           </div>
 
           {/* Bottom Bar */}
-          <div className="mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-zinc-500 dark:text-zinc-400">
-              © 2025 Xeno Analytics. All rights reserved.
-            </p>
+          <div className="mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row items-center justify-center gap-4">
             <p className="text-sm text-zinc-500 dark:text-zinc-400">
               Built by <span className="font-medium text-zinc-700 dark:text-zinc-300">Navadeep Naidu</span> for Xeno FDE Assignment
             </p>

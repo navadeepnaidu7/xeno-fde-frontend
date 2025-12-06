@@ -65,7 +65,7 @@ export default function SignInPage() {
               <Hexagon className="h-7 w-7 text-white dark:text-zinc-900" />
             </div>
             <span className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">
-              Xeno
+              XDIA
             </span>
           </div>
 

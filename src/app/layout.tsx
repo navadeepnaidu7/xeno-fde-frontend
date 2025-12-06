@@ -10,7 +10,7 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "Xeno Analytics - Shopify Store Insights",
+  title: "XDIA Analytics - Shopify Store Insights",
   description: "Multi-tenant analytics dashboard for Shopify stores. Track revenue, customers, orders, and more.",
   keywords: ["shopify", "analytics", "dashboard", "ecommerce", "metrics"],
 };
